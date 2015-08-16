@@ -35,11 +35,18 @@ var buildConfig = {
     index: {
       src: 'source/frontend/html/index.jade',
       dest: 'build/public',
-      title: "Calorie Accountant"
+      locals: {
+        title: "HTML5 Games!"
+      }
     },
     games: {
       src: 'source/frontend/html/games/**/*.jade',
-      dest: 'build/public/games'
+      dest: 'build/public/games',
+      locals: {
+        bubbleShooter: {
+          title: "Bubble Shooter!"
+        }
+      }
     },
     js: {
       project: {
@@ -171,9 +178,7 @@ gulp.task('build-frontend-index-html', ['clean'], function () {
   return gulp.src(buildConfig.frontend.index.src)
     .pipe(jade({
       pretty: true,
-      locals: {
-        title: buildConfig.frontend.index.title
-      }
+      locals: buildConfig.frontend.index.locals
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest));
 
@@ -184,7 +189,7 @@ gulp.task('build-frontend-games-html', ['clean'], function () {
   return gulp.src(buildConfig.frontend.games.src)
     .pipe(jade({
       pretty: true,
-      locals: {}
+      locals: buildConfig.frontend.games.locals
     }))
     .pipe(gulp.dest(buildConfig.frontend.games.dest));
 
