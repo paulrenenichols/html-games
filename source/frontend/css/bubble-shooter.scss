@@ -1,0 +1,45 @@
+@import "partials/variables";
+
+body {
+  margin: 0;
+}
+
+#page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 738px;
+}
+
+#top_bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1000px;
+  height: 70px;
+  background-color: #369;
+  color: #fff;
+}
+
+#game {
+  position: absolute;
+  left: 0px;
+  top: 70px;
+  width: 1000px;
+  height: 620px;
+  background-color: #fff;
+  clip: auto;
+  overflow: hidden;
+}
+
+#footer_bar {
+  position: absolute;
+  left: 0;
+  top: 690px;
+  width: 1000px;
+  height: 48px;
+  background-color: #369;
+}
+
+
