@@ -1,8 +1,8 @@
-HTML Game Boilerplate
+HTML Games
 ================
 
 # Dependencies
-You must have [MongoDB](http://docs.mongodb.org/manual/installation/) installed locally and running.
+You need node and gulp to run this project.
 
 # Build Process
 To build the project run the following:
