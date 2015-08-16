@@ -37,9 +37,9 @@ var buildConfig = {
       dest: 'build/public',
       title: "Calorie Accountant"
     },
-    templates: {
-      src: 'source/frontend/html/templates/**/*.jade',
-      dest: 'build/public/templates'
+    games: {
+      src: 'source/frontend/html/games/**/*.jade',
+      dest: 'build/public/games'
     },
     js: {
       project: {
@@ -179,14 +179,14 @@ gulp.task('build-frontend-index-html', ['clean'], function () {
 
 });
 
-gulp.task('build-frontend-templates-html', ['clean'], function () {
+gulp.task('build-frontend-games-html', ['clean'], function () {
   
-  return gulp.src(buildConfig.frontend.templates.src)
+  return gulp.src(buildConfig.frontend.games.src)
     .pipe(jade({
       pretty: true,
       locals: {}
     }))
-    .pipe(gulp.dest(buildConfig.frontend.templates.dest));
+    .pipe(gulp.dest(buildConfig.frontend.games.dest));
 
 });
 
@@ -205,7 +205,7 @@ gulp.task('build-frontend-js-project', ['test-frontend', 'clean'], function () {
 });
 
 // Main frontend build task
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
 
 // Build all, don't npm install
 gulp.task('build-all', ['build-frontend', 'build-server'], function(done) { done(); });
