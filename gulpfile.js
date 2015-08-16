@@ -236,7 +236,7 @@ gulp.task('install', ['build-all'], function (cb) {
 })
 
 
-gulp.task('start', function (cb) {
+gulp.task('start', ['stop'], function (cb) {
  
   var runDirectoryPrefix = {
     prefix: 'build'
