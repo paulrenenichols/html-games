@@ -22,15 +22,12 @@ body {
   color: #fff;
 }
 
-#game {
+#board {
   position: absolute;
-  left: 0px;
-  top: 70px;
-  width: 1000px;
+  left: 120px;
+  top: 0;
+  width: 760px;
   height: 620px;
-  background-color: #fff;
-  clip: auto;
-  overflow: hidden;
 }
 
 #footer_bar {
@@ -40,6 +37,35 @@ body {
   width: 1000px;
   height: 48px;
   background-color: #369;
+}
+
+.bubble {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url("../img/bubble_sprite_sheet.png");
+}
+
+.user_bubble {
+  left: 360px;
+  top: 470px;
+}
+
+.bubble_0
+{
+  background-position: 0 0;
+}
+.bubble_1
+{
+  background-position: 0 -50px;
+}
+.bubble_2
+{
+  background-position: 0 -100px;
+}
+.bubble_3
+{
+  background-position: 0 -150px;
 }
 
 
