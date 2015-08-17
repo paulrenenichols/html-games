@@ -11,17 +11,18 @@ var     parseArgs   = require('minimist')
     ,   through2    = require('through2')
     ,   npm         = require('npm')
     ,   _           = require('lodash')
+    ,   Q           = require('q')
     ,   mocha       = require('gulp-mocha')
     ,   del         = require('del')
     ,   vinylPaths  = require('vinyl-paths')
-    ,   karmaServer = require('karma').Server;
+    ,   karmaServer = require('karma').Server
+    ,   fs          = require('fs');
 
 var buildPackageJson = require('./source/server/package.json');
 
 var projectPackageJson = require('./package.json');
 
 var consoleStream = through2.obj(function(file, encoding, cb) {
-  //console.log(JSON.stringify(file, null, 2));
   file.contents.pipe(process.stdout);
 
   this.push(file);
@@ -106,7 +107,8 @@ gulp.task('lint-server', function () {
     .pipe(jshint({ 
       laxcomma: true
     }))
-    .pipe(jshint.reporter(stylish));
+    .pipe(jshint.reporter(stylish))
+    pipe(jshint.reporter('fail'));
 
 });
 
@@ -116,16 +118,24 @@ gulp.task('test-server', ['lint-server'], function (done) {
           .pipe(mocha({reporter: 'spec'}));
 });
 
-// Task that removes build folder
-gulp.task('clean', function () {
+function clean() {
   return gulp.src('build', {read: false})
     .pipe(vinylPaths(del));
+}
+
+// Task that removes build folder
+gulp.task('clean', function () {
+  return clean();
 })
+
+function buildServer () {
+  return gulp.src(buildConfig.server.all)
+    .pipe(gulp.dest('build'));
+}
 
 // Task that copies server files into build directory
 gulp.task('build-server', ['clean', 'test-server'], function () {
-  return gulp.src(buildConfig.server.all)
-    .pipe(gulp.dest('build'));
+  return buildServer();
 });
 
 
@@ -144,7 +154,8 @@ gulp.task('lint-frontend', function () {
       browser: true,
       laxcomma: true
     }))
-    .pipe(jshint.reporter(stylish));
+    .pipe(jshint.reporter(stylish))
+    pipe(jshint.reporter('fail'));
 
 });
 
@@ -210,7 +221,7 @@ gulp.task('build-frontend-js-project', ['test-frontend', 'clean'], function () {
 });
 
 // Main frontend build task
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img']);
 
 // Build all, don't npm install
 gulp.task('build-all', ['build-frontend', 'build-server'], function(done) { done(); });
