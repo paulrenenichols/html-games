@@ -14,7 +14,17 @@ $(document).ready(function () {
       return sprite;
     }
 
+    function position () {
+      return sprite.position();
+    }
+
+    function animate(options) {
+      return sprite.animate(options);
+    }
+
     bubble.getSprite = getSprite;
+    bubble.position  = position;
+    bubble.animate  = animate;
 
     return bubble;
   }
