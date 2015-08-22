@@ -4,14 +4,14 @@ var     express         = require('express')
     ,   logger          = require('morgan')
     ,   cookieParser    = require('cookie-parser')
     ,   bodyParser      = require('body-parser')
-    ,   debug           = require('debug')('game-app:boot');
+    ,   livereload      = require('express-livereload')
+    ,   debug           = require('debug')('html-games:express:app');
 
-debug("booting game-app");
 
 // Select api, configure middleware, set up routes
 var api = {};
 
-debug("detecting api choice from process.env.API, variable is set to: %s");
+debug("detecting api choice from process.env.API, variable is set to: %s", process.env.API);
 
 switch (process.env.API) {
     default:
@@ -23,8 +23,16 @@ var router      = require('./router')(middleware);
 
 var app = express();
 
+debug("app.get('env')", app.get('env'));
+
+app.use(require('connect-livereload')({
+  port: 35729
+}));
+
 app.set('view engine', 'jade');
 app.set('views', 'views');
+
+app.set('port', process.env.PORT || 3000);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -35,7 +43,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', router);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
