@@ -1,10 +1,28 @@
 {
   "name": "html-games",
   "version": "0.1.0",
+  "scripts": {
+    "start": "node ./build/bin/www &",
+    "stop": "ps -f | grep 'node \\./build/bin/www'  | awk '{print \"kill -9 \" $2}' | sh"
+  },
+  "dependencies": {
+    "bcrypt": "*",
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "debug": "*",
+    "express": "*",
+    "jade": "*",
+    "lodash": "*",
+    "mongodb": "*",
+    "morgan": "*",
+    "q": "*",
+    "serve-favicon": "*"
+  },
   "devDependencies": {
     "chai": "*",
     "chai-as-promised": "*",
     "chai-spies": "*",
+    "del": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",
     "gulp-concat": "*",
@@ -32,10 +50,10 @@
     "mongodb": "*",
     "npm": "*",
     "q": "*",
+    "reload": "^0.4.0",
     "sinon": "*",
     "sinon-chai": "*",
     "through2": "*",
-    "del": "*",
     "vinyl-paths": "*"
   }
 }
