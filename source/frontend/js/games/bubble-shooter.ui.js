@@ -6,7 +6,8 @@ $(document).ready(function () {
 
     var ui = {};
 
-    var bubbleDiameter = 44;
+    var BUBBLE_DIAMETER = 44;
+    var ROW_HEIGHT      = 40;
 
     function initialize() {
     }
@@ -22,8 +23,8 @@ $(document).ready(function () {
 
     function getBubblePosition(bubble) {
       var bubblePosition = bubble.position();
-      bubblePosition.left += bubbleDiameter/2;
-      bubblePosition.top += bubbleDiameter/2;
+      bubblePosition.left += BUBBLE_DIAMETER/2;
+      bubblePosition.top += BUBBLE_DIAMETER/2;
       return bubblePosition;
     }
 
@@ -42,8 +43,8 @@ $(document).ready(function () {
     function fireBubble(bubble, coordinates, duration){
       bubble.animate(
         {
-          left : coordinates.x - bubbleDiameter/2,
-          top : coordinates.y - bubbleDiameter/2
+          left : coordinates.x - BUBBLE_DIAMETER/2,
+          top : coordinates.y - BUBBLE_DIAMETER/2
         },
         {
           duration : duration,
@@ -52,12 +53,39 @@ $(document).ready(function () {
       );
     }
 
+    function drawBoard(board){
+
+      var rows = board.getRows();
+
+      var gameArea = $("#board");
+
+      for(var i=0; i<rows.length; i++){
+
+        var row = rows[i];
+        for(var j=0; j<row.length; j++){
+
+          var bubble = row[j];
+          if(bubble){
+            var sprite = bubble.getSprite();
+            gameArea.append(sprite);
+            var left = j * BUBBLE_DIAMETER/2;
+            var top = i * ROW_HEIGHT;
+            sprite.css({
+              left : left,
+              top : top
+            });
+          }
+        }
+      }
+    }
+
     ui.initialize         = initialize;
     ui.hideDialog         = hideDialog;
     ui.getMousePosition   = getMousePosition;
     ui.getBubblePosition  = getBubblePosition;
     ui.getBubbleAngle     = getBubbleAngle;
     ui.fireBubble         = fireBubble;
+    ui.drawBoard         = drawBoard;
 
     return ui;
   

@@ -34,9 +34,13 @@ $(document).ready(function () {
     }
 
     function startGame() {
-      $(".but_start_game").unbind("click");
+      $(".button_start_game").unbind("click");
       BubbleShoot.UI.hideDialog();
       userBubble = createNextUserBubble();
+
+      // Create the game board
+      game.board = BubbleShoot.Board.buildBoard();
+      BubbleShoot.UI.drawBoard(game.board);
       
       $("#game").bind("click", mouseClickHandler);
 
