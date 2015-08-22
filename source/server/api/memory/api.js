@@ -1,6 +1,8 @@
+var debug = require('debug')('html-games:memory-api');
 
+function memoryApi() {
 
-function memmoryApi() {
+  debug('building memory api');
 
   var api = {};
 
@@ -17,4 +19,4 @@ function memmoryApi() {
   return api;
 }
 
-module.exports = memmoryApi;
+module.exports = memoryApi;

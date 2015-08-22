@@ -11,7 +11,8 @@ function buildApplicationRouter(middleware) {
     next();
   });
 
-  router.get('/hello', middleware.hello());
+  debug('middleware.hello? ', !!middleware.hello);
+  router.get('/hello', middleware.hello);
 
   router.get('/', function (request, response) {
     response.send('html-games server api');

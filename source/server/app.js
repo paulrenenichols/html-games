@@ -13,10 +13,17 @@ var api = {};
 
 debug("detecting api choice from process.env.API, variable is set to: %s", process.env.API);
 
-switch (process.env.API) {
+var apiChoice = process.env.API ? process.env.API : 'memory'
+
+switch (apiChoice) {
+    case 'memory':
+        api = require('./api/memory/api.js')();
+        break;
     default:
-        api = require('./api/memory/api.js');
+        api = require('./api/memory/api.js')();
 }
+
+debug('api.hello? %s', !!api.hello);
 
 var middleware  = require('./middleware')(api);
 var router      = require('./router')(middleware);
