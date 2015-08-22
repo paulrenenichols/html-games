@@ -48,7 +48,11 @@ $(document).ready(function () {
         },
         {
           duration : duration,
-          easing : "linear"
+          easing : "linear",
+          complete: function () {
+            console.log('animation complete, destroy!');
+            bubble.destroy();
+          }
         }
       );
     }
@@ -79,13 +83,18 @@ $(document).ready(function () {
       }
     }
 
-    ui.initialize         = initialize;
-    ui.hideDialog         = hideDialog;
-    ui.getMousePosition   = getMousePosition;
-    ui.getBubblePosition  = getBubblePosition;
-    ui.getBubbleAngle     = getBubbleAngle;
-    ui.fireBubble         = fireBubble;
-    ui.drawBoard         = drawBoard;
+    function drawUserBubbleCount (numBubbles){
+      $("#bubbles_remaining").text(numBubbles);
+    }
+
+    ui.initialize           = initialize;
+    ui.hideDialog           = hideDialog;
+    ui.getMousePosition     = getMousePosition;
+    ui.getBubblePosition    = getBubblePosition;
+    ui.getBubbleAngle       = getBubbleAngle;
+    ui.fireBubble           = fireBubble;
+    ui.drawBoard            = drawBoard;
+    ui.drawUserBubbleCount  = drawUserBubbleCount;
 
     return ui;
   
