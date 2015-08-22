@@ -1,6 +1,10 @@
 {
   "name": "html-games",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulrenenichols/html-games.git"
+  },
   "scripts": {
     "start": "node ./build/bin/www &",
     "stop": "ps -f | grep 'node \\./build/bin/www'  | awk '{print \"kill -9 \" $2}' | sh"
