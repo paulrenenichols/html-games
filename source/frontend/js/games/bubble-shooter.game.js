@@ -7,6 +7,8 @@ $(document).ready(function () {
     var game = {};    
 
     var userBubble;
+    var userBubbleCount;
+    var MAX_USER_BUBBLES = 70;
 
     function initialize () {
       $(".button_start_game").bind("click", startGame);
@@ -24,19 +26,24 @@ $(document).ready(function () {
         y : bubbleCoords.top - distY
       };
       BubbleShoot.UI.fireBubble(userBubble, coords, duration);
+      userBubble = createNextUserBubble();
     }
     
     function createNextUserBubble () {
       var bubble = BubbleShoot.Bubble.create();
       bubble.getSprite().addClass("user_bubble");
       $("#board").append(bubble.getSprite());
+      BubbleShoot.UI.drawUserBubbleCount(userBubbleCount);
+      userBubbleCount--;
       return bubble;
     }
 
     function startGame() {
       $(".button_start_game").unbind("click");
       BubbleShoot.UI.hideDialog();
+      userBubbleCount = MAX_USER_BUBBLES;
       userBubble = createNextUserBubble();
+
 
       // Create the game board
       game.board = BubbleShoot.Board.buildBoard();
