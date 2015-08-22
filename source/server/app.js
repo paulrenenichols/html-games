@@ -13,7 +13,7 @@ var api = {};
 
 debug("detecting api choice from process.env.API, variable is set to: %s", process.env.API);
 
-var apiChoice = process.env.API ? process.env.API : 'memory'
+var apiChoice = process.env.API ? process.env.API : 'memory';
 
 switch (apiChoice) {
     case 'memory':
