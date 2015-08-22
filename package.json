@@ -5,9 +5,9 @@
     "type": "git",
     "url": "https://github.com/paulrenenichols/html-games.git"
   },
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "scripts": {
-    "start": "node ./build/bin/www &",
+    "start": "DEBUG=html-game:* node ./build/bin/www &",
     "stop": "ps -f | grep 'node \\./build/bin/www'  | awk '{print \"kill -9 \" $2}' | sh"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "chai": "*",
     "chai-as-promised": "*",
     "chai-spies": "*",
+    "connect-livereload": "^0.5.3",
     "del": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",
@@ -34,6 +35,7 @@
     "gulp-debug": "*",
     "gulp-jade": "*",
     "gulp-jshint": "*",
+    "gulp-live-server": "0.0.24",
     "gulp-mocha": "*",
     "gulp-run": "*",
     "gulp-sass": "*",
@@ -52,7 +54,6 @@
     "minimist": "*",
     "mocha": "*",
     "npm": "*",
-    "reload": "^0.4.0",
     "sinon": "*",
     "sinon-chai": "*",
     "through2": "*",
