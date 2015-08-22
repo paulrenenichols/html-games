@@ -258,7 +258,7 @@ gulp.task('install', ['build-all'], function (cb) {
 
 gulp.task('serve', ['build-all'], function() {
   //1. run your script as a server
-  var server = gls.new('build/bin/www', 
+  var server = gls.new('build/app.js', 
     {
       env: {
         NODE_ENV: 'development',
@@ -266,7 +266,7 @@ gulp.task('serve', ['build-all'], function() {
       }
   });
 
-  server.start();
+  server.start('build/bin/www');
 
   //use gulp.watch to trigger server actions(notify, start or stop)
   gulp.watch(['build/public/**/*'], function (file) {
