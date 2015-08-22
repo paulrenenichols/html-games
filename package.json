@@ -5,6 +5,7 @@
     "type": "git",
     "url": "https://github.com/paulrenenichols/html-games.git"
   },
+  "license" : "BSD-3-Clause",
   "scripts": {
     "start": "node ./build/bin/www &",
     "stop": "ps -f | grep 'node \\./build/bin/www'  | awk '{print \"kill -9 \" $2}' | sh"
@@ -48,12 +49,9 @@
     "karma-phantomjs-launcher": "*",
     "karma-safari-launcher": "*",
     "karma-spec-reporter": "0.0.16",
-    "lodash": "*",
     "minimist": "*",
     "mocha": "*",
-    "mongodb": "*",
     "npm": "*",
-    "q": "*",
     "reload": "^0.4.0",
     "sinon": "*",
     "sinon-chai": "*",
