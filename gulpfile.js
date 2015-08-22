@@ -6,6 +6,7 @@ var     parseArgs   = require('minimist')
     ,   util        = require('gulp-util')
     ,   debug       = require('gulp-debug')
     ,   jshint      = require('gulp-jshint')
+    ,   gls         = require('gulp-live-server')
     ,   stylish     = require('jshint-stylish')
     ,   nodeUtil    = require('util')
     ,   through2    = require('through2')
@@ -17,8 +18,6 @@ var     parseArgs   = require('minimist')
     ,   vinylPaths  = require('vinyl-paths')
     ,   karmaServer = require('karma').Server
     ,   fs          = require('fs');
-
-var buildPackageJson = require('./source/server/package.json');
 
 var projectPackageJson = require('./package.json');
 
@@ -77,8 +76,10 @@ var buildConfig = {
       dest: 'build/public/img'
     },
     test: {
-      karmaConfigPath: '/test/karma.conf.js'
-    }
+      karmaConfigPath: '/test/karma.conf.js',
+      all: 'test/**/*'
+    },
+    all: "source/frontend/**/*"
   },
 
   server: {
@@ -89,7 +90,9 @@ var buildConfig = {
       src: 'test/server/**/*.js'
     },
     all: 'source/server/**/*'
-  }
+  },
+  allSource: "source/**/*",
+  allTest: "test/**/*"
 };
 
 
@@ -118,14 +121,14 @@ gulp.task('test-server', ['lint-server'], function (done) {
           .pipe(mocha({reporter: 'spec'}));
 });
 
-function clean() {
-  return gulp.src('build', {read: false})
+function clean(path) {
+  return gulp.src(path, {read: false})
     .pipe(vinylPaths(del));
 }
 
 // Task that removes build folder
-gulp.task('clean', function () {
-  return clean();
+gulp.task('clean-server', function () {
+  return clean('build/*');
 })
 
 function buildServer () {
@@ -134,7 +137,7 @@ function buildServer () {
 }
 
 // Task that copies server files into build directory
-gulp.task('build-server', ['clean', 'test-server'], function () {
+gulp.task('build-server', ['clean-server', 'test-server'], function () {
   return buildServer();
 });
 
@@ -145,6 +148,10 @@ gulp.task('build-server', ['clean', 'test-server'], function () {
  *  Frontend Tasks
  *
  */
+
+gulp.task('clean-frontend', function () {
+  return clean('build/public/*');
+});
 
 // jsHint task for frontend code
 gulp.task('lint-frontend', function () {
@@ -169,12 +176,12 @@ gulp.task('test-frontend', ['lint-frontend'], function (done) {
 
 // Frontend Build Tasks
 
-gulp.task('build-frontend-copy-img', ['clean'], function () {
+gulp.task('build-frontend-copy-img', ['clean-frontend'], function () {
   return gulp.src(buildConfig.frontend.img.src)
     .pipe(gulp.dest(buildConfig.frontend.img.dest));
 });
 
-gulp.task('build-frontend-css', ['clean'], function () {
+gulp.task('build-frontend-css', ['clean-frontend'], function () {
 
   util.log(buildConfig.frontend.css.project.src, buildConfig.frontend.css.vendor.src);
   util.log(buildConfig.frontend.css.project.dest);
@@ -184,7 +191,7 @@ gulp.task('build-frontend-css', ['clean'], function () {
 
 });
 
-gulp.task('build-frontend-index-html', ['clean'], function () {
+gulp.task('build-frontend-index-html', ['clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.index.src)
     .pipe(jade({
@@ -195,7 +202,7 @@ gulp.task('build-frontend-index-html', ['clean'], function () {
 
 });
 
-gulp.task('build-frontend-games-html', ['clean'], function () {
+gulp.task('build-frontend-games-html', ['clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.games.src)
     .pipe(jade({
@@ -206,14 +213,14 @@ gulp.task('build-frontend-games-html', ['clean'], function () {
 
 });
 
-gulp.task('build-frontend-js-vendor', ['clean'], function () {
+gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.vendor.src)
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
 });
 
-gulp.task('build-frontend-js-project', ['test-frontend', 'clean'], function () {
+gulp.task('build-frontend-js-project', ['test-frontend', 'clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
@@ -223,7 +230,10 @@ gulp.task('build-frontend-js-project', ['test-frontend', 'clean'], function () {
 // Main frontend build task
 gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img']);
 
-// Build all, don't npm install
+// Build all, don't npm install in the build directory.
+// Run install for that when you building for production.
+// By default, the development project is running off of the node modules folder
+// in the project directory.
 gulp.task('build-all', ['build-frontend', 'build-server'], function(done) { done(); });
 
 
@@ -232,7 +242,7 @@ gulp.task('install', ['build-all'], function (cb) {
     prefix: 'build'
   };
 
-  _.merge(buildPackageJsonWithPrefix, buildPackageJson);
+  _.merge(buildPackageJsonWithPrefix, projectPackageJson);
 
   npm.load(buildPackageJsonWithPrefix, function () {
     npm.commands.install(function (error) {
@@ -244,54 +254,32 @@ gulp.task('install', ['build-all'], function (cb) {
       }
     });
   });
-})
+});
 
-
-gulp.task('start', ['stop'], function (cb) {
- 
-  var runDirectoryPrefix = {
-    prefix: 'build'
-  };
-
-  _.merge(runDirectoryPrefix, buildPackageJson);
-
-  npm.load(runDirectoryPrefix, function () {
-    npm.commands.start(function (error) {
-      if (error) {
-        cb(error);
+gulp.task('serve', ['build-all'], function() {
+  //1. run your script as a server
+  var server = gls.new('build/bin/www', 
+    {
+      env: {
+        NODE_ENV: 'development',
+        DEBUG: 'html-games:*, express:*'
       }
-      else {
-        cb();
-      }
-    });
   });
-});
 
-gulp.task('stop', function (cb) {
- 
-  var runDirectoryPrefix = {
-    prefix: 'build'
-  };
+  server.start();
 
-  _.merge(runDirectoryPrefix, buildPackageJson);
-
-  npm.load(runDirectoryPrefix, function () {
-    npm.commands.stop(function (error) {
-      if (error) {
-        cb(error);
-      }
-      else {
-        cb();
-      }
-    });
+  //use gulp.watch to trigger server actions(notify, start or stop)
+  gulp.watch(['build/public/**/*'], function (file) {
+    server.notify.apply(server, [file]);
   });
+
+  gulp.watch([buildConfig.frontend.all, buildConfig.frontend.test.all], ['build-frontend']);
 });
 
-gulp.task('watch-frontend', ['install'], function () {
-  gulp.watch([buildConfig.frontend.js.project.src,
-              buildConfig.frontend.js.test.src,
-              buildConfig.frontend.index.src,
-              buildConfig.frontend.css.project.src], ['build-frontend']);
+gulp.task('watch', ['serve'], function () {
+  gulp.watch([buildConfig.allSource, buildConfig.allTest], ['serve']);
 });
+
+gulp.task('default', ['serve']);
 
 
