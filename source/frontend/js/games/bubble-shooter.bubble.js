@@ -22,8 +22,8 @@ $(document).ready(function () {
       return sprite.position();
     }
 
-    function animate(options) {
-      return sprite.animate(options);
+    function animate() {
+      return sprite.animate.apply(sprite, arguments);
     }
 
     function getType() {
@@ -38,6 +38,12 @@ $(document).ready(function () {
       return column;
     }
 
+    function destroy() {
+      console.log('bubble destroy');
+      sprite.remove();
+      sprite = null;
+    }
+
 
     bubble.getSprite  = getSprite;
     bubble.position   = position;
@@ -45,6 +51,7 @@ $(document).ready(function () {
     bubble.getType    = getType;
     bubble.getRow     = getRow;
     bubble.getColumn  = getColumn;
+    bubble.destroy    = destroy;
 
     return bubble;
   }
