@@ -1,6 +1,5 @@
 var     parseArgs   = require('minimist')
     ,   gulp        = require('gulp')
-    ,   browserify  = require('gulp-browserify')
     ,   jade        = require('gulp-jade')
     ,   sass        = require('gulp-sass')
     ,   run         = require('gulp-run')
@@ -18,7 +17,12 @@ var     parseArgs   = require('minimist')
     ,   del         = require('del')
     ,   vinylPaths  = require('vinyl-paths')
     ,   karmaServer = require('karma').Server
-    ,   fs          = require('fs');
+    ,   fs          = require('fs')
+    ,   browserify  = require('browserify')
+    ,   source      = require('vinyl-source-stream')
+    ,   buffer      = require('vinyl-buffer')
+    ,   uglify      = require('gulp-uglify')
+    ,   sourcemaps  = require('gulp-sourcemaps');
 
 var projectPackageJson = require('./package.json');
 
@@ -59,7 +63,7 @@ var buildConfig = {
         dest: null
       },
       vendor: {
-        src: 'source/frontend/vendor/js/development/**/*.js',
+        src: 'source/frontend/vendor/js/development/vendor.js',
         dest: 'build/public/vendor/js'
       }
     },
@@ -216,11 +220,18 @@ gulp.task('build-frontend-games-html', ['clean-frontend'], function () {
 
 gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
   
-  return gulp.src(buildConfig.frontend.js.vendor.src)
-    .pipe(browserify({
-      insertGlobals : true,
-      debug : true
-    }))
+  var b = browserify({
+    entries: buildConfig.frontend.js.vendor.src,
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source(buildConfig.frontend.js.vendor.src))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(uglify())
+      .on('error', util.log)
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
 });
@@ -228,10 +239,6 @@ gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
 gulp.task('build-frontend-js-project', ['test-frontend', 'clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
-    .pipe(browserify({
-      insertGlobals : true,
-      debug : true
-    }))
     .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
 
 });
