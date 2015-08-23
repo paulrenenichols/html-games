@@ -18,13 +18,22 @@ $(document).ready(function () {
       var angle = BubbleShoot.UI.getBubbleAngle(userBubble, event);
       var duration = 750;
       var distance = 1000;
-      var distX = Math.sin(angle) * distance;
-      var distY = Math.cos(angle) * distance;
-      var bubbleCoords = BubbleShoot.UI.getBubblePosition(userBubble);
-      var coords = {
-        x : bubbleCoords.left + distX,
-        y : bubbleCoords.top - distY
-      };
+      var collision = BubbleShoot.CollisionDetector.findIntersection(userBubble, game.board, angle);
+      var coords;
+      if(collision) {
+        console.log('collision', collision);
+        coords = collision.coords;
+        duration = Math.round(duration * collision.distToCollision / distance);
+      }
+      else {
+        var distX = Math.sin(angle) * distance;
+        var distY = Math.cos(angle) * distance;
+        var bubbleCoords = BubbleShoot.UI.getBubblePosition(userBubble);
+        coords = {
+          x : bubbleCoords.left + distX,
+          y : bubbleCoords.top - distY
+        };
+      }
       BubbleShoot.UI.fireBubble(userBubble, coords, duration);
       userBubble = createNextUserBubble();
     }
