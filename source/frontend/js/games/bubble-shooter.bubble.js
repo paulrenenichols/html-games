@@ -38,6 +38,14 @@ $(document).ready(function () {
       return column;
     }
 
+    function getCoordinates(){
+      var coordinates = {
+        left: getColumn() * BubbleShoot.UI.BUBBLE_DIAMETER/2  + BubbleShoot.UI.BUBBLE_DIAMETER/2,
+        top:  getRow()    * BubbleShoot.UI.ROW_HEIGHT     + BubbleShoot.UI.BUBBLE_DIAMETER/2
+      };
+      return coordinates;
+    }
+
     function destroy() {
       console.log('bubble destroy');
       sprite.remove();
@@ -45,13 +53,14 @@ $(document).ready(function () {
     }
 
 
-    bubble.getSprite  = getSprite;
-    bubble.position   = position;
-    bubble.animate    = animate;
-    bubble.getType    = getType;
-    bubble.getRow     = getRow;
-    bubble.getColumn  = getColumn;
-    bubble.destroy    = destroy;
+    bubble.getSprite      = getSprite;
+    bubble.position       = position;
+    bubble.animate        = animate;
+    bubble.getType        = getType;
+    bubble.getRow         = getRow;
+    bubble.getColumn      = getColumn;
+    bubble.getCoordinates = getCoordinates;
+    bubble.destroy        = destroy;
 
     return bubble;
   }
