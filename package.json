@@ -24,6 +24,7 @@
     "serve-favicon": "*"
   },
   "devDependencies": {
+    "browserify": "^11.0.1",
     "chai": "*",
     "chai-as-promised": "*",
     "chai-spies": "*",
@@ -39,9 +40,10 @@
     "gulp-mocha": "*",
     "gulp-run": "*",
     "gulp-sass": "*",
-    "gulp-sourcemaps": "*",
-    "gulp-uglify": "*",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
     "gulp-util": "*",
+    "jquery": "^2.1.4",
     "jshint-stylish": "*",
     "karma": "*",
     "karma-chai-plugins": "*",
@@ -51,12 +53,15 @@
     "karma-phantomjs-launcher": "*",
     "karma-safari-launcher": "*",
     "karma-spec-reporter": "0.0.16",
+    "ls": "^0.1.0",
     "minimist": "*",
     "mocha": "*",
     "npm": "*",
     "sinon": "*",
     "sinon-chai": "*",
     "through2": "*",
-    "vinyl-paths": "*"
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-paths": "*",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
