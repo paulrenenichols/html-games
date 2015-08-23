@@ -51,7 +51,7 @@ $(document).ready(function () {
           easing : "linear",
           complete: function () {
             console.log('animation complete, destroy!');
-            bubble.destroy();
+            //bubble.destroy();
           }
         }
       );
@@ -95,6 +95,8 @@ $(document).ready(function () {
     ui.fireBubble           = fireBubble;
     ui.drawBoard            = drawBoard;
     ui.drawUserBubbleCount  = drawUserBubbleCount;
+    ui.BUBBLE_DIAMETER      = BUBBLE_DIAMETER;
+    ui.ROW_HEIGHT           = ROW_HEIGHT;
 
     return ui;
   
