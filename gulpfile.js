@@ -1,5 +1,6 @@
 var     parseArgs   = require('minimist')
     ,   gulp        = require('gulp')
+    ,   browserify  = require('gulp-browserify')
     ,   jade        = require('gulp-jade')
     ,   sass        = require('gulp-sass')
     ,   run         = require('gulp-run')
@@ -216,6 +217,10 @@ gulp.task('build-frontend-games-html', ['clean-frontend'], function () {
 gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.vendor.src)
+    .pipe(browserify({
+      insertGlobals : true,
+      debug : true
+    }))
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
 });
@@ -223,6 +228,10 @@ gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
 gulp.task('build-frontend-js-project', ['test-frontend', 'clean-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
+    .pipe(browserify({
+      insertGlobals : true,
+      debug : true
+    }))
     .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
 
 });
