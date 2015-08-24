@@ -1,1 +1,1 @@
-var $ = require("./jquery-2.1.4");
+var $ = require("jquery");
