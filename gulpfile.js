@@ -226,11 +226,11 @@ gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
   });
 
   return b.bundle()
-    .pipe(source(buildConfig.frontend.js.vendor.src))
+    .pipe(source('vendor.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(uglify())
-      .on('error', util.log)
+//      .pipe(uglify())
+//      .on('error', util.log)
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
