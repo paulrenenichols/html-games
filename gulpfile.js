@@ -17,7 +17,12 @@ var     parseArgs   = require('minimist')
     ,   del         = require('del')
     ,   vinylPaths  = require('vinyl-paths')
     ,   karmaServer = require('karma').Server
-    ,   fs          = require('fs');
+    ,   fs          = require('fs')
+    ,   browserify  = require('browserify')
+    ,   source      = require('vinyl-source-stream')
+    ,   buffer      = require('vinyl-buffer')
+    ,   uglify      = require('gulp-uglify')
+    ,   sourcemaps  = require('gulp-sourcemaps');
 
 var projectPackageJson = require('./package.json');
 
@@ -58,7 +63,7 @@ var buildConfig = {
         dest: null
       },
       vendor: {
-        src: 'source/frontend/vendor/js/development/**/*.js',
+        src: 'source/frontend/vendor/js/development/vendor.js',
         dest: 'build/public/vendor/js'
       }
     },
@@ -215,7 +220,18 @@ gulp.task('build-frontend-games-html', ['clean-frontend'], function () {
 
 gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
   
-  return gulp.src(buildConfig.frontend.js.vendor.src)
+  var b = browserify({
+    entries: buildConfig.frontend.js.vendor.src,
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source('vendor.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+//      .pipe(uglify())
+//      .on('error', util.log)
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
 });

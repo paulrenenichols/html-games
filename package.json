@@ -24,10 +24,11 @@
     "serve-favicon": "*"
   },
   "devDependencies": {
+    "browserify": "*",
     "chai": "*",
     "chai-as-promised": "*",
     "chai-spies": "*",
-    "connect-livereload": "^0.5.3",
+    "connect-livereload": "*",
     "del": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",
@@ -35,13 +36,14 @@
     "gulp-debug": "*",
     "gulp-jade": "*",
     "gulp-jshint": "*",
-    "gulp-live-server": "0.0.24",
+    "gulp-live-server": "*",
     "gulp-mocha": "*",
     "gulp-run": "*",
     "gulp-sass": "*",
     "gulp-sourcemaps": "*",
     "gulp-uglify": "*",
     "gulp-util": "*",
+    "jquery": "*",
     "jshint-stylish": "*",
     "karma": "*",
     "karma-chai-plugins": "*",
@@ -50,13 +52,15 @@
     "karma-mocha": "*",
     "karma-phantomjs-launcher": "*",
     "karma-safari-launcher": "*",
-    "karma-spec-reporter": "0.0.16",
+    "karma-spec-reporter": "*",
     "minimist": "*",
     "mocha": "*",
     "npm": "*",
     "sinon": "*",
     "sinon-chai": "*",
     "through2": "*",
-    "vinyl-paths": "*"
+    "vinyl-buffer": "*",
+    "vinyl-paths": "*",
+    "vinyl-source-stream": "*"
   }
 }
