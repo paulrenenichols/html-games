@@ -1,22 +1,24 @@
-$(document).ready(function () {
-  console.log(window.location.href);
-  console.log(window.location.host);
-  console.log(window.location.origin);
+var $ = require('jquery');
+var _ = require('lodash');
+var Q = require('q');
 
-  $.ajax({
-    url: window.location.origin + "/api/"
-  })
-  .done(function(data) {
-    console.log(data);
-  });
+console.log(window.location.href);
+console.log(window.location.host);
+console.log(window.location.origin);
 
-  $.ajax({
-    url: window.location.origin + "/api/hello",
-    data: {
-      name: "bob"
-    }
-  })
-  .done(function(data) {
-    console.log(data.hello);
-  });
+$.ajax({
+  url: window.location.origin + "/api/"
+})
+.done(function(data) {
+  console.log(data);
+});
+
+$.ajax({
+  url: window.location.origin + "/api/hello",
+  data: {
+    name: "bob"
+  }
+})
+.done(function(data) {
+  console.log(data.hello);
 });
