@@ -22,7 +22,8 @@ var     parseArgs   = require('minimist')
     ,   source      = require('vinyl-source-stream')
     ,   buffer      = require('vinyl-buffer')
     ,   uglify      = require('gulp-uglify')
-    ,   sourcemaps  = require('gulp-sourcemaps');
+    ,   sourcemaps  = require('gulp-sourcemaps')
+    ,   es          = require('event-stream');
 
 var projectPackageJson = require('./package.json');
 
@@ -65,6 +66,26 @@ var buildConfig = {
       vendor: {
         src: 'source/frontend/vendor/js/development/vendor.js',
         dest: 'build/public/vendor/js'
+      },
+      bundles: {
+        index: {
+          entries: 'source/frontend/js/index.js',
+          require: [],
+          output: 'index.js',
+          dest: 'build/public/js'
+        },
+        bubbleShooter: {
+          entries: 'source/frontend/js/games/bubble-shooter.js',
+          require: [],
+          output: 'bubble-shooter.js',
+          dest: 'build/public/js/games'
+        },
+        vendor: {
+          entries: 'source/frontend/vendor/js/development/vendor.js',
+          require: ['jquery', 'q', 'lodash'],
+          output: 'vendor.js',
+          dest: 'build/public/vendor/js'
+        }
       }
     },
     css: {
@@ -218,33 +239,37 @@ gulp.task('build-frontend-games-html', ['clean-frontend'], function () {
 
 });
 
-gulp.task('build-frontend-js-vendor', ['clean-frontend'], function () {
+function buildBrowserifyBundle(bundleOptions) {
+
+    var b = browserify({
+      entries: bundleOptions.entries,
+      debug: true
+    });
+
+    b.require(bundleOptions.require);
+
+    return b.bundle()
+      .pipe(source(bundleOptions.output))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
+  //      .pipe(uglify())
+  //      .on('error', util.log)
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest(bundleOptions.dest));
+}
+
+gulp.task('build-frontend-js-bundles', ['test-frontend', 'clean-frontend'], function () {
   
-  var b = browserify({
-    entries: buildConfig.frontend.js.vendor.src,
-    debug: true
+  var tasks = _.map(buildConfig.frontend.js.bundles, function (bundleOptions) {
+    return buildBrowserifyBundle(bundleOptions);
   });
 
-  return b.bundle()
-    .pipe(source('vendor.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-//      .pipe(uglify())
-//      .on('error', util.log)
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
-
-});
-
-gulp.task('build-frontend-js-project', ['test-frontend', 'clean-frontend'], function () {
-  
-  return gulp.src(buildConfig.frontend.js.project.src)
-    .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
-
+  // create a merged stream
+  return es.merge.apply(null, tasks);
 });
 
 // Main frontend build task
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img']);
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-games-html', 'build-frontend-js-bundles', 'build-frontend-css', 'build-frontend-copy-img']);
 
 // Build all, don't npm install in the build directory.
 // Run install for that when you building for production.
