@@ -71,18 +71,21 @@ var buildConfig = {
         index: {
           entries: 'source/frontend/js/index.js',
           require: [],
+          external: ['jquery', 'q', 'lodash'],
           output: 'index.js',
           dest: 'build/public/js'
         },
         bubbleShooter: {
           entries: 'source/frontend/js/games/bubble-shooter.js',
           require: [],
+          external: ['jquery', 'q', 'lodash'],
           output: 'bubble-shooter.js',
           dest: 'build/public/js/games'
         },
         vendor: {
           entries: 'source/frontend/vendor/js/development/vendor.js',
           require: ['jquery', 'q', 'lodash'],
+          external: [],
           output: 'vendor.js',
           dest: 'build/public/vendor/js'
         }
@@ -247,6 +250,7 @@ function buildBrowserifyBundle(bundleOptions) {
     });
 
     b.require(bundleOptions.require);
+    b.external(bundleOptions.external);
 
     return b.bundle()
       .pipe(source(bundleOptions.output))
