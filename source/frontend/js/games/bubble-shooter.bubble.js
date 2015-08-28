@@ -37,6 +37,14 @@ function create (row, column, type) {
     return column;
   }
 
+  function setRow(newRow) {
+    row = newRow;
+  }
+
+  function setColumn(newColumn) {
+    column = newColumn;
+  }
+
   function getCoordinates(){
     var coordinates = {
       left: getColumn() * ui.BUBBLE_DIAMETER/2  + ui.BUBBLE_DIAMETER/2,
@@ -58,6 +66,8 @@ function create (row, column, type) {
   bubble.getType        = getType;
   bubble.getRow         = getRow;
   bubble.getColumn      = getColumn;
+  bubble.setRow         = setRow;
+  bubble.setColumn      = setColumn;
   bubble.getCoordinates = getCoordinates;
   bubble.destroy        = destroy;
 

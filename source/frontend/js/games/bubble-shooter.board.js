@@ -1,4 +1,5 @@
 var createBubble = require('./bubble-shooter.bubble.js').create;
+var ui = require('./bubble-shooter.ui.js');
 
 function buildBoard () {
 
@@ -12,6 +13,24 @@ function buildBoard () {
 
   function getRows() { 
     return rows;
+  }
+
+  function addBubble(bubble, coords) {
+    var rowNum = Math.floor(coords.y / ui.ROW_HEIGHT);
+    var colNum = coords.x / ui.BUBBLE_DIAMETER * 2;
+    if(rowNum % 2 === 1){
+      colNum -= 1;
+    }
+    colNum = Math.round(colNum/2) * 2;
+    if(rowNum % 2 === 0) {
+      colNum -= 1;
+    }
+    if(!rows[rowNum]) {
+      rows[rowNum] = [];
+    }
+    rows[rowNum][colNum] = bubble;
+    bubble.setRow(rowNum);
+    bubble.setColumn(colNum);
   }
 
   function createLayout() {
@@ -29,7 +48,8 @@ function buildBoard () {
     return rows;
   }
 
-  board.getRows = getRows;
+  board.getRows   = getRows;
+  board.addBubble = addBubble;
 
   return board;
 

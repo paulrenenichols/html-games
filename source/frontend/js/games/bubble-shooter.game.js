@@ -26,6 +26,7 @@ function buildGame () {
       console.log('collision', collision);
       coords = collision.coords;
       duration = Math.round(duration * collision.distToCollision / distance);
+      game.board.addBubble(userBubble, coords);
     }
     else {
       var distX = Math.sin(angle) * distance;

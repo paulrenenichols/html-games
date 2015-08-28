@@ -46,8 +46,13 @@ function buildUI () {
         duration : duration,
         easing : "linear",
         complete: function () {
-          console.log('animation complete, destroy!');
-          //bubble.destroy();
+          console.log('animation complete!');
+          if(bubble.getRow() !== null){
+            bubble.getSprite().css({
+              left : bubble.getCoordinates().left - BUBBLE_DIAMETER/2,
+              top : bubble.getCoordinates().top - BUBBLE_DIAMETER/2
+            });
+          }
         }
       }
     );
