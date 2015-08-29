@@ -93,7 +93,6 @@ function findIntersection(userBubble, board, angle){
       }
     }
   }
-  
   return collision;
 }
 
