@@ -27,6 +27,10 @@ function buildGame () {
       coords = collision.coords;
       duration = Math.round(duration * collision.distToCollision / distance);
       game.board.addBubble(userBubble, coords);
+      var group = game.board.getGroup(userBubble, {});
+      if(group.list.length >= 3){
+        popBubbles(group.list, duration);
+      }
     }
     else {
       var distX = Math.sin(angle) * distance;
@@ -41,6 +45,17 @@ function buildGame () {
     userBubble = createNextUserBubble();
   }
   
+  function popBubbles(bubbles, delay) {
+    $.each(bubbles, function(){
+      var bubble = this;
+
+      game.board.popBubble(this.getRow(), this.getColumn());
+      setTimeout(function(){
+        bubble.destroy();
+      }, delay + 200);
+    });
+  }
+
   function createNextUserBubble () {
     var bubble = createBubble();
     bubble.getSprite().addClass("user_bubble");
