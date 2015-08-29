@@ -54,7 +54,7 @@ function create (row, column, type) {
   }
 
   function destroy() {
-    console.log('bubble destroy');
+    console.log('bubble destroyed');
     sprite.remove();
     sprite = null;
   }
