@@ -18,18 +18,22 @@ function buildGame () {
 
   function mouseClickHandler(event){
     var angle = ui.getBubbleAngle(userBubble, event);
-    var duration = 750;
+    var maxDuration = 2000;
+    var duration = 1500;
     var distance = 1000;
     var collision = collisionDetector.findIntersection(userBubble, game.board, angle);
     var coords;
     if(collision) {
       console.log('collision', collision);
       coords = collision.coords;
-      duration = Math.round(duration * collision.distToCollision / distance);
+      duration = Math.round(maxDuration * collision.distanceToCollision / distance);
+      console.log('collision.distanceToCollision', collision.distanceToCollision);
+      console.log('duration', duration);
+      console.log('distance', distance);
       game.board.addBubble(userBubble, coords);
       var group = game.board.getGroup(userBubble, {});
       if(group.list.length >= 3){
-        popBubbles(group.list, duration);
+        popBubbles(group.list, duration + 100);
       }
     }
     else {
@@ -47,12 +51,17 @@ function buildGame () {
   
   function popBubbles(bubbles, delay) {
     $.each(bubbles, function(){
+      
       var bubble = this;
+      setTimeout(function(){
+        bubble.animatePop();
+      }, delay);
 
       game.board.popBubble(this.getRow(), this.getColumn());
       setTimeout(function(){
         bubble.destroy();
       }, delay + 200);
+      delay += 60;
     });
   }
 
