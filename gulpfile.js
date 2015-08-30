@@ -147,7 +147,7 @@ var buildConfig = {
       src: 'source/frontend/img/**/*',
       dest: 'build/public/img'
     },
-    
+
 // **frontend test configuration**
     test: {
       karmaConfigPath: '/test/karma.conf.js',
@@ -217,7 +217,33 @@ function buildServer () {
 }
 
 
+// <span id="generateDocumentation"><span>
+// **generateDocumentation** 
+//
+// Generates documentation from source using [Docco](http://jashkenas.github.io/docco/).
+//
+// Used by the [gendoc](#gendoc) task.
+function generateDocumentation(inputPath, outputPath) {
+  
+  var arguments = ['docco', '-o', outputPath, inputPath];
+  docco.run(arguments);
+}
+
 // ## Gulp Tasks
+
+// ### Documentation Tasks
+
+// <span id="gendoc"><span>
+// **gendoc** 
+//
+// Generates documentation from source using [Docco](http://jashkenas.github.io/docco/).
+//
+// Uses the [generateDocumentation](#generateDocumentation) helper function.
+//
+// To run this task, type `gulp gendoc` on the command line.
+gulp.task('gendoc', function () {
+  generateDocumentation('gulpfile.js', 'docs');
+});
 
 // ### Server Tasks
 
