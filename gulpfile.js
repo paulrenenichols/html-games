@@ -75,6 +75,18 @@ var buildConfig = {
           output: 'index.js',
           dest: 'build/public/js'
         },
+        engine: {
+          entries: 'source/frontend/js/engine/engine.js',
+          require: [
+            {
+              file: './source/frontend/js/engine/vector2d.js',
+              expose: 'vector2d'
+            }
+          ],
+          external: [],
+          output: 'engine.js',
+          dest: 'build/public/js/engine'
+        },
         bubbleShooter: {
           entries: 'source/frontend/js/games/bubble-shooter.js',
           require: [],
