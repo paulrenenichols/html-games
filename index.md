@@ -21,4 +21,4 @@ The url of the app will be *http://localhost:3000*
 
 ### Documentation
 
-* Read about the [Build Process](gulpfile.html) and all that you can do with the project's [gulpfile](https://github.com/paulrenenichols/html-games/blob/master/gulpfile.js)
+* Read about the [Build Process](docs/gulpfile.html) and all that you can do with the project's [gulpfile](https://github.com/paulrenenichols/html-games/blob/master/gulpfile.js)
