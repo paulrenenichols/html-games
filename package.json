@@ -30,6 +30,7 @@
     "chai-spies": "*",
     "connect-livereload": "*",
     "del": "*",
+    "docco": "*",
     "event-stream": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",
