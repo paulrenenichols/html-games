@@ -1,5 +1,6 @@
 var createBubble = require('./bubble-shooter.bubble.js').create;
 var ui = require('./bubble-shooter.ui.js');
+var $ = require('jquery');
 
 function buildBoard () {
 
@@ -34,9 +35,9 @@ function buildBoard () {
   }
 
   function getBubble(rowNum, colNum){
-    if(!this.getRows()[rowNum])
+    if(!getRows()[rowNum])
       return null;
-      return this.getRows()[rowNum][colNum];
+      return getRows()[rowNum][colNum];
   }
 
   function getBubbleNeighbors(curRow, curCol){
@@ -44,7 +45,7 @@ function buildBoard () {
 
     for (var rowNum = curRow -1; rowNum <= curRow + 1; rowNum++){
       for (var colNum = curCol -2; colNum <= curCol + 2; colNum++){
-        var bubble = this.getBubble(rowNum, colNum);
+        var bubble = getBubble(rowNum, colNum);
         if(bubble && !(colNum === curCol && rowNum === curRow)){
           bubbles.push(bubble);
         }
@@ -53,7 +54,7 @@ function buildBoard () {
     return bubbles;
   }
 
-  function getGroup(bubble, found){
+  function getGroup(bubble, found, differentColor){
     var curRow = bubble.getRow();
     var curCol = bubble.getColumn();
 
@@ -67,22 +68,52 @@ function buildBoard () {
     }
     found[curRow][curCol] = bubble;
     found.list.push(bubble);
-    var surrounding = this.getBubbleNeighbors(curRow, curCol);
+    var surrounding = getBubbleNeighbors(curRow, curCol);
     // console.log("neighbors of "+ curRow + ", " + curCol + ": ");
     for(var i = 0; i < surrounding.length; i++){
       var neighbor = surrounding[i];
 
       // console.log("       neighbor " + i + ": " + neighbor.getRow() + ", " + neighbor.getColumn() + ": ");
-      if(neighbor.getType() === bubble.getType()){
-        found = this.getGroup(neighbor, found);
+      if(neighbor.getType() === bubble.getType() || differentColor){
+        found = getGroup(neighbor, found, differentColor);
       }
     }
     return found;
   }
 
-  function popBubble(rowNum, colNum){
+  function popBubble(rowNum, colNum) {
     var row = rows[rowNum];
     delete row[colNum];
+  }
+
+  function findOrphans() {
+    var connected = [];
+    var groups = [];
+    var i;
+
+    for(i = 0; i < rows.length; i++) {
+      connected[i] = [];
+    }
+    for(i = 0; i < rows[0].length; i++) {
+      var bubble = getBubble(0, i);
+      if(bubble && !connected[0][i]) {
+        var group = getGroup(bubble, {}, true);
+        $.each(group.list, function(){
+          connected[this.getRow()][this.getColumn()] = true;
+        });
+      }
+    }
+
+    var orphaned = [];
+    for(var i = 0; i < rows.length; i++){
+      for(var j = 0; j < rows[i].length; j++){
+        var bubble = getBubble(i, j);
+        if(bubble && !connected[i][j]){
+          orphaned.push(bubble);
+        }
+      }
+    }
+    return orphaned;
   }
 
   function createLayout() {
@@ -106,7 +137,7 @@ function buildBoard () {
   board.getBubbleNeighbors = getBubbleNeighbors;
   board.getBubble   = getBubble;
   board.popBubble   = popBubble;
-
+  board.findOrphans = findOrphans;
   return board;
 
 }

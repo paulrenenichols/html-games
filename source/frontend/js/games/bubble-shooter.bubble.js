@@ -1,5 +1,8 @@
 var $ = require('jquery');
+var Q = require('q');
 var ui = require('./bubble-shooter.ui.js');
+
+
 
 function create (row, column, type) {
 
@@ -27,20 +30,23 @@ function create (row, column, type) {
 
   function animatePop() {
     var top = type * sprite.height();
+    console.log("top", top);
+    // sprite.css( "background-position", "-50px -" + top + "px" );
     sprite.css("transform", "rotate(" + (Math.random() * 360) + "deg)");
 
     setTimeout(function(){
-      sprite.css("background-position", "-50px-", + top + "px");
-    }, 125);
-    setTimeout(function(){
-      sprite.css("background-position", "-100px-", + top + "px");
-    }, 150);
-    setTimeout(function(){
-      sprite.css("background-position", "-150px-", + top + "px");
-    }, 175);
-    setTimeout(function(){
-      sprite.remove();
+      sprite.css({"background-position": "-50px -" + top + "px", "tranform":  "rotate(" + (Math.random() * 360) + "deg)"});
     }, 200);
+    setTimeout(function(){
+      sprite.css({"background-position": "-100px -" + top + "px", "tranform":  "rotate(" + (Math.random() * 360) + "deg)"});
+    }, 300);
+    setTimeout(function(){
+      sprite.css({"background-position": "-150px -" + top + "px", "tranform":  "rotate(" + (Math.random() * 360) + "deg)"});
+    }, 400);
+    console.log("top", top);
+    // setTimeout(function(){
+    //   sprite.remove();
+    // }, 200);
   }
 
   function getType() {
