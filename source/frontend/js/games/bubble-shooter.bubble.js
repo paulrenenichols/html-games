@@ -25,6 +25,24 @@ function create (row, column, type) {
     return sprite.animate.apply(sprite, arguments);
   }
 
+  function animatePop() {
+    var top = type * sprite.height();
+    sprite.css("transform", "rotate(" + (Math.random() * 360) + "deg)");
+
+    setTimeout(function(){
+      sprite.css("background-position", "-50px-", + top + "px");
+    }, 125);
+    setTimeout(function(){
+      sprite.css("background-position", "-100px-", + top + "px");
+    }, 150);
+    setTimeout(function(){
+      sprite.css("background-position", "-150px-", + top + "px");
+    }, 175);
+    setTimeout(function(){
+      sprite.remove();
+    }, 200);
+  }
+
   function getType() {
     return type;
   }
@@ -63,6 +81,7 @@ function create (row, column, type) {
   bubble.getSprite      = getSprite;
   bubble.position       = position;
   bubble.animate        = animate;
+  bubble.animatePop     = animatePop;
   bubble.getType        = getType;
   bubble.getRow         = getRow;
   bubble.getColumn      = getColumn;

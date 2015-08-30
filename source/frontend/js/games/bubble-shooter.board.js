@@ -57,7 +57,7 @@ function buildBoard () {
     var curRow = bubble.getRow();
     var curCol = bubble.getColumn();
 
-    console.log(this);
+    // console.log(this);
     if(!found[curRow])
       found[curRow] = {};
     if(!found.list)
@@ -68,11 +68,11 @@ function buildBoard () {
     found[curRow][curCol] = bubble;
     found.list.push(bubble);
     var surrounding = this.getBubbleNeighbors(curRow, curCol);
-    console.log("neighbors of "+ curRow + ", " + curCol + ": ");
+    // console.log("neighbors of "+ curRow + ", " + curCol + ": ");
     for(var i = 0; i < surrounding.length; i++){
       var neighbor = surrounding[i];
 
-      console.log("       neighbor " + i + ": " + neighbor.getRow() + ", " + neighbor.getColumn() + ": ");
+      // console.log("       neighbor " + i + ": " + neighbor.getRow() + ", " + neighbor.getColumn() + ": ");
       if(neighbor.getType() === bubble.getType()){
         found = this.getGroup(neighbor, found);
       }
