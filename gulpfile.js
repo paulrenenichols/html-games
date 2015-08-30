@@ -242,7 +242,13 @@ function generateDocumentation(inputPath, outputPath) {
 //
 // To run this task, type `gulp gendoc` on the command line.
 gulp.task('gendoc', function () {
+
   generateDocumentation('gulpfile.js', 'docs');
+  return gulp.src('index.jade')
+    .pipe(jade({
+      pretty: true,
+    }))
+    .pipe(gulp.dest('./'));
 });
 
 // ### Server Tasks
