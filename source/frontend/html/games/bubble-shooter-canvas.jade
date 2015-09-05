@@ -1,0 +1,30 @@
+doctype html
+html(lang="en_US")
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/css/reset.css')
+    link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/bubble-shooter.css')
+    title= bubbleShooter.title
+  body
+    div(id='page')
+      div(id='top_bar')
+      div(id='game')
+        div(id='board')
+        div(id="bubbles_remaining")
+      div(id='footer_bar')
+      div(id="start_game" class="dialog")
+        div(id="start_game_message")
+        h2 Start a new game
+        div(class="button_start_game button") New Game
+    
+    script(type='text/javascript'
+           src='/vendor/js/vendor.js')
+    script(type='text/javascript'
+           src='/js/index.js')
+    script(type='text/javascript'
+           src='/js/engine/engine.js')
+    script(type='text/javascript'
+           src='/js/games/bubble-shooter-canvas/bubble-shooter.js')
+
