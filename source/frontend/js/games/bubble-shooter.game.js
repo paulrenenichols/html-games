@@ -3,6 +3,7 @@ var ui = require('./bubble-shooter.ui.js');
 var createBubble = require('./bubble-shooter.bubble.js').create;
 var board = require('./bubble-shooter.board.js');
 var collisionDetector = require('./bubble-shooter.collision.js');
+var kaboom = require('./jquery.kaboom.js');
 
 function buildGame () {
 
@@ -81,9 +82,7 @@ function buildGame () {
       game.board.popBubble(bubble.getRow(), bubble.getColumn());
 
       setTimeout(function(){
-        bubble.animate({
-          top: 1000
-        }, 1000);
+        bubble.getSprite().kaboom();
       }, delay);
     });
   }
