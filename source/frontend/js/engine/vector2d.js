@@ -106,4 +106,12 @@ vector2d.prototype.dotProduct = function(vector) {
   return (this.x * vector.x) + (this.y * vector.y);
 };
 
+vector2d.prototype.crossProductMagnitude = function(vector) {
+  return (this.x * vector.y) - (this.y * vector.x);
+};
+
+vector2d.prototype.angle = function(vector) {
+  return Math.asin(this.crossProductMagnitude(vector) / (this.magnitude() * vector.magnitude()));
+};
+
 module.exports = vector2d;
