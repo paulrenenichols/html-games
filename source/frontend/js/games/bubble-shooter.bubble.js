@@ -21,7 +21,14 @@ function create (row, column, type) {
   }
 
   function position () {
-    return sprite.position();
+    return sprite.offset();
+  }
+
+  function center() {
+    var bubblePosition = position();
+    bubblePosition.left += ui.BUBBLE_DIAMETER / 2;
+    bubblePosition.top += ui.BUBBLE_DIAMETER / 2;
+    return bubblePosition;
   }
 
   function animate() {
@@ -86,6 +93,7 @@ function create (row, column, type) {
 
   bubble.getSprite      = getSprite;
   bubble.position       = position;
+  bubble.center         = center;
   bubble.animate        = animate;
   bubble.animatePop     = animatePop;
   bubble.getType        = getType;
