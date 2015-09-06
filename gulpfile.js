@@ -113,7 +113,7 @@ var buildConfig = {
         bubbleShooter: {
           entries: 'source/frontend/js/games/bubble-shooter.js',
           require: [],
-          external: ['jquery', 'q', 'lodash'],
+          external: ['jquery', 'q', 'lodash', 'vector2d'],
           output: 'bubble-shooter.js',
           dest: 'build/public/js/games'
         },
