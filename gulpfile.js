@@ -120,7 +120,7 @@ var buildConfig = {
 
 // **vendor.js bundle**
         vendor: {
-          entries: 'source/frontend/vendor/js/development/vendor.js',
+          entries: 'source/frontend/vendor/js/vendor.js',
           require: ['jquery', 'q', 'lodash'],
           external: [],
           output: 'vendor.js',
