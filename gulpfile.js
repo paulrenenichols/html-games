@@ -109,22 +109,13 @@ var buildConfig = {
           dest: 'build/public/js/engine'
         },
 
-// **bubble-shooter-html bundle**
-        bubbleShooterHTML: {
-          entries: 'source/frontend/js/games/bubble-shooter-html/bubble-shooter.js',
+// **bubble-shooter.js bundle**
+        bubbleShooter: {
+          entries: 'source/frontend/js/games/bubble-shooter.js',
           require: [],
           external: ['jquery', 'q', 'lodash'],
           output: 'bubble-shooter.js',
-          dest: 'build/public/js/games/bubble-shooter-html'
-        },
-
-// **bubble-shooter-canvas bundle**
-        bubbleShooterCanvas: {
-          entries: 'source/frontend/js/games/bubble-shooter-canvas/bubble-shooter.js',
-          require: [],
-          external: ['jquery', 'q', 'lodash'],
-          output: 'bubble-shooter.js',
-          dest: 'build/public/js/games/bubble-shooter-canvas'
+          dest: 'build/public/js/games'
         },
 
 // **vendor.js bundle**
