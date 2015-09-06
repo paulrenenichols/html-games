@@ -5,15 +5,13 @@ body {
 }
 
 #page {
-  position: absolute;
-  left: 0;
-  top: 0;
   width: 1000px;
   height: 738px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #top_bar {
-  position: absolute;
   left: 0;
   top: 0;
   width: 1000px;
@@ -23,7 +21,7 @@ body {
 }
 
 #board {
-  position: absolute;
+  margin: auto;
   left: 120px;
   top: 0;
   width: 760px;
@@ -31,7 +29,6 @@ body {
 }
 
 #footer_bar {
-  position: absolute;
   left: 0;
   top: 690px;
   width: 1000px;
@@ -40,15 +37,39 @@ body {
 }
 
 .bubble {
-  position: absolute;
   width: 50px;
   height: 50px;
-  background-image: url("../img/bubble_sprite_sheet.png");
+  background-image: url("../img/bubble-shooter/bubble_sprite_sheet.png");
+}
+
+#arrow {
+  position: relative;
+  background-image: url("../img/bubble-shooter/arrow.png");
+  width: 96px;
+  height: 150px;
+  top: 420px;
+  left: 332px;
+  transition: transform 0.5s linear;
+  transform-origin: bottom;
+  transform: rotate(0rad) translateY(-60px);
+}
+
+#bubbles_remaining
+{
+  position: relative;
+  width: 50px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  top: 360px;
+  margin: auto;
 }
 
 .user_bubble {
-  left: 360px;
-  top: 470px;
+  position: relative;
+  top: 360px;
+  margin: auto;
 }
 
 .bubble_0
@@ -111,18 +132,9 @@ body {
 }
 
 #start_game {
+  position: absolute;
   display: block;
 }
 
-#bubbles_remaining
-{
-  position: absolute;
-  left: 479px;
-  top: 520px;
-  width: 50px;
-  font-size: 26px;
-  font-weight: bold;
-  color: #000;
-  text-align: center;
-}
+
 
