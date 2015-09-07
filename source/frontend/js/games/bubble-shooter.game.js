@@ -23,6 +23,7 @@ function buildGame () {
   var firedBubbleVelocity;
 
   var arrow = $('#arrow');
+  var board = $("#board");
 
   function initialize() {
     $(".button_start_game").on("click", startGame);
@@ -38,6 +39,8 @@ function buildGame () {
     var leftOverTime = 0;
 
     var timeStep = 10;
+
+    var boardOffset = board.offset();
 
     function loop(timestamp) {
 
@@ -59,7 +62,7 @@ function buildGame () {
         firedBubble.move(velocity);
       }
 
-      if (firedBubble.position().top < 0) {
+      if (firedBubble.center().top < boardOffset.top || firedBubble.center().top > (boardOffset.top + board.height()) || firedBubble.center().left < boardOffset.left || firedBubble.center().left > (boardOffset.left + board.width())) {
         firedBubble.destroy();
         firedBubble = null;
         userBubbleCount--;
@@ -134,7 +137,7 @@ function buildGame () {
     bubble.getSprite().addClass("user_bubble");
     $("#board").append(bubble.getSprite());
     ui.drawUserBubbleCount(userBubbleCount);
-    userBubbleCount--;
+
     return bubble;
   }
 
