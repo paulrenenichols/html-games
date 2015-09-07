@@ -19,10 +19,58 @@ function buildGame () {
   var lastMouseVector = vector2d(0, -1);
   var lastMouseAngle = 0;
 
+  var firedBubble;
+  var firedBubbleVelocity;
+
   var arrow = $('#arrow');
 
-  function initialize () {
+  function initialize() {
     $(".button_start_game").on("click", startGame);
+  }
+
+  function animate(velocity) {
+    debug('animate start');
+
+    firedBubble = userBubble;
+
+    var start = 0;
+
+    var leftOverTime = 0;
+
+    var timeStep = 10;
+
+    function loop(timestamp) {
+
+      if(!start) {
+        start = timestamp;
+      }
+
+      var delta = timestamp - start;
+
+      debug('loop, delta ' + delta);
+
+      leftOverTime += delta;
+
+      var stepCount = Math.floor(leftOverTime / timeStep);
+
+      leftOverTime -= ( stepCount * timeStep );
+
+      for( var i = 0; i < stepCount; i++) {
+        firedBubble.move(velocity);
+      }
+
+      if (firedBubble.position().top < 0) {
+        firedBubble.destroy();
+        firedBubble = null;
+        userBubbleCount--;
+        userBubble = createNextUserBubble();
+      }
+      else {
+        window.requestAnimationFrame(loop);
+      }
+    }
+
+    window.requestAnimationFrame(loop);
   }
 
   function getMouseVector(event) {
@@ -40,28 +88,9 @@ function buildGame () {
 
     var mouseVector = getMouseVector(event);
 
-    var angle = upUnitVector.angle(mouseVector);
-    var dotProduct = upUnitVector.dotProduct(mouseVector);
-    var crossProductMagnitude = upUnitVector.crossProductMagnitude(mouseVector);
-    var angleDiff = angle - lastMouseAngle;
+    mouseVector.normalize();
 
-    // if (angleDiff > 0) {
-    //   arrow.css('transform', 'rotate(' + angleDiff + 'rad) translateY(-60px)');
-    // }
-    // else if (angle < 0) {
-    //   arrow.css('transform', 'rotate(' + (Math.PI *2 - angleDiff) + 'rad) translateY(-60px)');
-    // }
-
-    // arrow.css('transform', 'rotate(' + angle + 'rad) translateY(-60px)');
-
-    debug('mouse angle with upUnitVector: ', angle);
-    debug('dotProduct with upUnitVector: ', dotProduct);
-    debug('crossProductMagnitude with upUnitVector: ', crossProductMagnitude);
-    debug('mouseVector: x: ', mouseVector.x, ', y: ', mouseVector.y);
-    debug('lastMouseVector: x: ', lastMouseVector.x, ', y: ', lastMouseVector.y);
-
-    lastMouseAngle = angle;
-    lastMouseVector = mouseVector;
+    animate(mouseVector);
   }
 
   function mouseMoveHandler(event) {
@@ -100,7 +129,7 @@ function buildGame () {
     });
   }
 
-  function createNextUserBubble () {
+  function createNextUserBubble() {
     var bubble = createBubble();
     bubble.getSprite().addClass("user_bubble");
     $("#board").append(bubble.getSprite());
@@ -117,7 +146,6 @@ function buildGame () {
 
     $("#game").on("click", mouseClickHandler);
     $("body").on("mousemove", mouseMoveHandler);
-
   }
 
   game.initialize = initialize;
