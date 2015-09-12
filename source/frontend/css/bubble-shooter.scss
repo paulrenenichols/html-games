@@ -24,7 +24,7 @@ body {
   margin: auto;
   left: 120px;
   top: 0;
-  width: 760px;
+  width: 100%;
   height: 620px;
 }
 
@@ -48,8 +48,9 @@ body {
   width: 96px;
   height: 150px;
   top: 420px;
-  left: 332px;
-  transition: transform 0.1s linear;
+  margin-right: auto;
+  margin-left: auto;
+  transition: transform 0.1s;
   transform-origin: bottom;
   transform: rotate(0rad) translateY(-60px);
 }
@@ -91,9 +92,7 @@ body {
 
 
 .dialog {
-  position: absolute;
-  left: 300px;
-  top: 110px;
+  position: relative;
   height: 460px;
   width: 320px;
   background-color: #369;
@@ -132,8 +131,11 @@ body {
 }
 
 #start_game {
-  position: absolute;
+  position: relative;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  top: 45px;
 }
 
 
