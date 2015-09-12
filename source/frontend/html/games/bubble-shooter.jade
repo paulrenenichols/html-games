@@ -11,13 +11,14 @@ html(lang="en_US")
       div(id='top_bar')
       div(id='game')
         div(id='board')
+          div(id="start_game" class="dialog")
+            div(id="start_game_message")
+            h2 Start a new game
+            div(class="button_start_game button") New Game
           div(id='arrow')
           div(id="bubbles_remaining")
       div(id='footer_bar')
-      div(id="start_game" class="dialog")
-        div(id="start_game_message")
-        h2 Start a new game
-        div(class="button_start_game button") New Game
+      
     
     script(type='text/javascript'
            src='/vendor/js/vendor.js')
