@@ -14,7 +14,7 @@ To build the project run the following:
 
 ### Running the Project
 
-Run the project by typing `gulp` in your 
+Run the project by typing `gulp` in your
 
 The url of the app will be *http://localhost:3000*
 
@@ -22,3 +22,7 @@ The url of the app will be *http://localhost:3000*
 ### Documentation
 
 Read about the [Build Process](https://paulrenenichols.github.io/html-games/docs/gulpfile.html) and all that you can do with the project's [gulpfile](https://github.com/paulrenenichols/html-games/blob/master/gulpfile.js)
+
+### Try the game!
+
+[Bubble Shooter](http://paulrenenichols.github.io/html-games/demos/games/bubble-shooter.html)
