@@ -21,7 +21,21 @@ function create (row, column, type) {
   }
 
   function position () {
-    return sprite.position();
+    return sprite.offset();
+  }
+
+  function move(vector) {
+    var offset = position();
+    offset.left += vector.x;
+    offset.top  += vector.y;
+    sprite.offset(offset);
+  }
+
+  function center() {
+    var bubblePosition = position();
+    bubblePosition.left += ui.BUBBLE_DIAMETER / 2;
+    bubblePosition.top += ui.BUBBLE_DIAMETER / 2;
+    return bubblePosition;
   }
 
   function animate() {
@@ -86,6 +100,8 @@ function create (row, column, type) {
 
   bubble.getSprite      = getSprite;
   bubble.position       = position;
+  bubble.center         = center;
+  bubble.move           = move;
   bubble.animate        = animate;
   bubble.animatePop     = animatePop;
   bubble.getType        = getType;

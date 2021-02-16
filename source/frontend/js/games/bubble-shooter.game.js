@@ -1,9 +1,11 @@
 var $ = require('jquery');
 var ui = require('./bubble-shooter.ui.js');
 var createBubble = require('./bubble-shooter.bubble.js').create;
-var board = require('./bubble-shooter.board.js');
-var collisionDetector = require('./bubble-shooter.collision.js');
-var kaboom = require('./jquery.kaboom.js');
+
+var vector2d = require('vector2d');
+
+var debug = require('./bubble-shooter.debug.js')('bubble-shooter:game');
+
 
 function buildGame () {
 
@@ -12,51 +14,94 @@ function buildGame () {
   var userBubble;
   var userBubbleCount;
   var MAX_USER_BUBBLES = 70;
+  var upUnitVector = vector2d(0, -1);
+  var leftUnitVector = vector2d(1, 0);
+  var lastMouseVector = vector2d(0, -1);
+  var lastMouseAngle = 0;
 
-  function initialize () {
-    $(".button_start_game").bind("click", startGame);
+  var firedBubble;
+  var firedBubbleVelocity;
+
+  var arrow = $('#arrow');
+  var board = $("#board");
+
+  function initialize() {
+    $(".button_start_game").on("click", startGame);
   }
 
-  function mouseClickHandler(event){
-    var angle = ui.getBubbleAngle(userBubble, event);
-    var maxDuration = 2000;
-    var duration = maxDuration;
-    var distance = 1000;
-    var collision = collisionDetector.findIntersection(userBubble, game.board, angle);
-    var coords;
-    if(collision) {
-      console.log('collision', collision);
-      coords = collision.coords;
-      duration = Math.round(maxDuration * collision.distanceToCollision / distance);
-      console.log('collision.distanceToCollision', collision.distanceToCollision);
-      console.log('duration', duration);
-      console.log('distance', distance);
-      game.board.addBubble(userBubble, coords);
-      var group = game.board.getGroup(userBubble, {});
-      if(group.list.length >= 3){
-        popBubbles(group.list, duration);
+  function animate(velocity) {
+    debug('animate start');
 
-        var orphans = game.board.findOrphans();
+    firedBubble = userBubble;
 
-        $.each(orphans, function(){
-          console.log("orphan", this);
-        })
-        var delay = duration + 1000 + 35 * group.list.length;
-        dropBubbles(orphans, delay);
+    var start = 0;
 
+    var leftOverTime = 0;
+
+    var timeStep = 10;
+
+    var boardOffset = board.offset();
+
+    function loop(timestamp) {
+
+      if(!start) {
+        start = timestamp;
+      }
+
+      var delta = timestamp - start;
+
+      debug('loop, delta ' + delta);
+
+      leftOverTime += delta;
+
+      var stepCount = Math.floor(leftOverTime / timeStep);
+
+      leftOverTime -= ( stepCount * timeStep );
+
+      for( var i = 0; i < stepCount; i++) {
+        firedBubble.move(velocity);
+      }
+
+      if (firedBubble.center().top < boardOffset.top || firedBubble.center().top > (boardOffset.top + board.height()) || firedBubble.center().left < boardOffset.left || firedBubble.center().left > (boardOffset.left + board.width())) {
+        firedBubble.destroy();
+        firedBubble = null;
+        userBubbleCount--;
+        userBubble = createNextUserBubble();
+      }
+      else {
+        window.requestAnimationFrame(loop);
       }
     }
-    else {
-      var distX = Math.sin(angle) * distance;
-      var distY = Math.cos(angle) * distance;
-      var bubbleCoords = ui.getBubblePosition(userBubble);
-      coords = {
-        x : bubbleCoords.left + distX,
-        y : bubbleCoords.top - distY
-      };
-    }
-    ui.fireBubble(userBubble, coords, duration);
-    userBubble = createNextUserBubble();
+
+    window.requestAnimationFrame(loop);
+  }
+
+  function getMouseVector(event) {
+    var userBubbleCenter = userBubble.center();
+    var x = event.clientX - userBubbleCenter.left;
+    var y = event.clientY - userBubbleCenter.top;
+
+    var mouseVector = vector2d(x, y);
+
+    return mouseVector;
+  }
+
+  function mouseClickHandler(event) {
+    debug('mouse click: ', event);
+
+    var mouseVector = getMouseVector(event);
+
+    mouseVector.normalize();
+
+    animate(mouseVector);
+  }
+
+  function mouseMoveHandler(event) {
+    var mouseVector = getMouseVector(event);
+
+    var angle = upUnitVector.angle(mouseVector);
+
+    arrow.css('transform', 'rotate(' + angle + 'rad) translateY(-60px)');
   }
   
   function popBubbles(bubbles, delay) {
@@ -87,28 +132,23 @@ function buildGame () {
     });
   }
 
-  function createNextUserBubble () {
+  function createNextUserBubble() {
     var bubble = createBubble();
     bubble.getSprite().addClass("user_bubble");
     $("#board").append(bubble.getSprite());
     ui.drawUserBubbleCount(userBubbleCount);
-    userBubbleCount--;
+
     return bubble;
   }
 
   function startGame() {
-    $(".button_start_game").unbind("click");
+    $(".button_start_game").off("click");
     ui.hideDialog();
     userBubbleCount = MAX_USER_BUBBLES;
     userBubble = createNextUserBubble();
 
-
-    // Create the game board
-    game.board = board.buildBoard();
-    ui.drawBoard(game.board);
-    
-    $("#game").bind("click", mouseClickHandler);
-
+    $("#game").on("click", mouseClickHandler);
+    $("body").on("mousemove", mouseMoveHandler);
   }
 
   game.initialize = initialize;

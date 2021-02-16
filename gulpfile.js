@@ -113,14 +113,14 @@ var buildConfig = {
         bubbleShooter: {
           entries: 'source/frontend/js/games/bubble-shooter.js',
           require: [],
-          external: ['jquery', 'q', 'lodash'],
+          external: ['jquery', 'q', 'lodash', 'vector2d'],
           output: 'bubble-shooter.js',
           dest: 'build/public/js/games'
         },
 
 // **vendor.js bundle**
         vendor: {
-          entries: 'source/frontend/vendor/js/development/vendor.js',
+          entries: 'source/frontend/vendor/js/vendor.js',
           require: ['jquery', 'q', 'lodash'],
           external: [],
           output: 'vendor.js',
